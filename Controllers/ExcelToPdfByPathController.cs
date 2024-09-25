@@ -46,17 +46,10 @@ namespace API.Controllers
                             stream.Position = 0;
 
                             // Convert to PDF
-                            MemoryStream pdfStream = ConvertExcelToPdf(stream);
-
-                            // Write the PDF stream to the output path
-                            System.IO.File.WriteAllBytes(
-                                request.outputAsExcelPath,
-                                pdfStream.ToArray()
-                            );
+                            String pdfStream = ConvertExcelToPdf(stream, request.outputAsExcelPath);
 
                             // Clean up
                             workbook.Close();
-                            pdfStream.Close();
                         }
                     }
                 }
@@ -69,9 +62,9 @@ namespace API.Controllers
             }
         }
 
-        public MemoryStream ConvertExcelToPdf(MemoryStream stream)
+        public String ConvertExcelToPdf(MemoryStream stream, string outputAsExcelPath)
         {
-            MemoryStream pdfStream = new MemoryStream();
+            // MemoryStream pdfStream = new MemoryStream();
 
             Spire.Xls.Workbook workbook = new Spire.Xls.Workbook();
             workbook.LoadFromStream(stream);
@@ -85,10 +78,12 @@ namespace API.Controllers
 
             workbook.ConverterSetting.SheetFitToWidth = true;
 
-            workbook.SaveToStream(pdfStream, Spire.Xls.FileFormat.PDF);
+            // workbook.SaveToStream(pdfStream, Spire.Xls.FileFormat.PDF);
+            workbook.SaveToFile(outputAsExcelPath);
 
-            pdfStream.Position = 0;
-            return pdfStream;
+            // pdfStream.Position = 0;
+            // return pdfStream;
+            return outputAsExcelPath;
         }
     }
 }

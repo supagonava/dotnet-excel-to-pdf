@@ -53,8 +53,7 @@ namespace API.Controllers
                         }
                     }
                 }
-
-                return Ok("Conversion successful.");
+                return Ok("{\"status\":true}");
             }
             catch (Exception ex)
             {
